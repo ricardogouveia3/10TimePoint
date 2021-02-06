@@ -3,12 +3,9 @@
   "description": "An extension for simple time conversions for timesheet.",
   "version": "0.1",
   "manifest_version": 3,
-  "background": {
-    "service_worker": "background.js"
-  },
-  "permissions": ["storage", "activeTab", "scripting"],
+  "permissions": [],
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "popup/index.html"
   },
-  "options_page": "options.html"
+  "options_page": "options/index.html"
 }
