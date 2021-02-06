@@ -4,12 +4,16 @@ const timeOutInputElement = document.getElementById("timeOutInput");
 const convertButtonElement = document.getElementById("convertButton");
 
 const spanResultElement = document.getElementById("resultSpan");
+const spanDecimalResultElement = document.getElementById("resultDecimalSpan");
 
 convertButtonElement.addEventListener("click", () => {
   const timeIn = timeInInputElement.value;
   const timeOut = timeOutInputElement.value;
   
-  spanResultElement.textContent = calculateDuration(timeIn, timeOut);
+  const timeDiff = calculateDuration(timeIn, timeOut);
+
+  spanResultElement.textContent = milisecondsToTime(timeDiff);
+  spanDecimalResultElement.textContent = millisecondsToDecimalHours(timeDiff)
 }, {});
 
 function calculateDuration(timeIn, timeOut) {
@@ -20,7 +24,7 @@ function calculateDuration(timeIn, timeOut) {
 
   if (timeDiff < 0) { return 'error' }
 
-  return milisecondsToTime(timeDiff);
+  return timeDiff;
 }
 
 function createDateWithTime(time) {
@@ -44,4 +48,15 @@ function milisecondsToTime(duration) {
   minutes = (minutes < 10) ? "0" + minutes : minutes;
 
   return hours + ":" + minutes;
+}
+
+function millisecondsToDecimalHours(time) {
+  time = milisecondsToTime(time);
+
+  const decimalMinutes = parseInt( ( time.split(':')[1] / 6 ) * 10 );
+  const decimalHours = parseInt( time.split(':')[0] );
+
+  const fixedTimeString = decimalHours + '.' + ( decimalMinutes < 10 ? '0' : '' ) + decimalMinutes;
+
+  return parseFloat(fixedTimeString).toFixed(2);
 }
