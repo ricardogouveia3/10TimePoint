@@ -17,8 +17,12 @@ convertButtonElement.addEventListener("click", () => {
   
   const timeDiff = calculateDuration(timeIn, timeOut);
 
-  spanResultElement.textContent = milisecondsToTime(timeDiff);
-  spanDecimalResultElement.textContent = millisecondsToDecimalHours(timeDiff)
+  if ( timeDiff < 0 || isNaN(timeDiff) ) {
+    errorHandler();
+  } else {
+    spanResultElement.textContent = milisecondsToTime(timeDiff);
+    spanDecimalResultElement.textContent = milisecondsToDecimalHours(timeDiff);
+  }
 }, {});
 
 switchModeButtonElement.addEventListener("click", () => {
@@ -58,7 +62,10 @@ function calculateDuration(timeIn, timeOut) {
 
   const timeDiff = timeStapOut - timeStampIn;
 
-  if (timeDiff < 0) { return 'error' }
+  if (timeDiff < 0) {
+    errorHandler();
+    return;
+  }
 
   return timeDiff;
 }
@@ -86,7 +93,7 @@ function milisecondsToTime(duration) {
   return hours + ":" + minutes;
 }
 
-function millisecondsToDecimalHours(time) {
+function milisecondsToDecimalHours(time) {
   time = milisecondsToTime(time);
 
   const decimalMinutes = parseInt( ( time.split(':')[1] / 6 ) * 10 );
@@ -95,4 +102,11 @@ function millisecondsToDecimalHours(time) {
   const fixedTimeString = decimalHours + '.' + ( decimalMinutes < 10 ? '0' : '' ) + decimalMinutes;
 
   return parseFloat(fixedTimeString).toFixed(2);
+}
+
+function errorHandler() {
+  spanResultElement.textContent = "e";
+  spanDecimalResultElement.textContent = "e";
+
+  return;
 }
