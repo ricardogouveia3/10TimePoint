@@ -1,0 +1,11 @@
+{
+  "name": "10 Time Point",
+  "description": "An extension for simple time conversions for timesheet.",
+  "version": "0.1",
+  "manifest_version": 3,
+  "permissions": [],
+  "action": {
+    "default_popup": "popup/index.html"
+  },
+  "options_page": "options/index.html"
+}

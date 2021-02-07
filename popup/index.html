@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="assets/reset.css">
+    <link rel="stylesheet" href="assets/style.css">
+  </head>
+  <body>
+    <header class="header">
+      <img class="header__logo" src="assets/logo.png" alt="10 Time Point logo">
+    </header>
+
+    <div class="input__container">
+      <div class="single-input-container">
+        <label for="timeInInput">Time in</label>
+        <input type="text" name="timeInInput" placeholder="--:--" id="timeInInput">
+      </div>
+      <div class="single-input-container" id="timeOutInputContainerElement">
+        <label for="timeOutInput">Time out</label>
+        <input type="text" name="timeOutInput" placeholder="--:--" id="timeOutInput">
+      </div>
+    </div>
+
+    <div class="result__container">
+      <div class="single-result-container" id="durationResultContainerElement">
+        <span class="result-label">Duration</span>
+        <span id="resultSpan">--:--</span>
+      </div>
+      <div class="single-result-container">
+        <span class="result-label">Decimal</span>
+        <span id="resultDecimalSpan">00.00</span>
+      </div>
+    </div>
+
+    <div class="button__container">
+      <button class="button-secundary" id="switchModeButton">Switch to Working Hours</button>
+      <button class="button-primary" id="convertButton">Convert!</button>
+    </div>
+
+    <span class="footer">
+      v0.1
+    </span>
+
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
