@@ -7,6 +7,9 @@ const switchModeButtonElement = document.getElementById("switchModeButton");
 const spanResultElement = document.getElementById("resultSpan");
 const spanDecimalResultElement = document.getElementById("resultDecimalSpan");
 
+const timeOutContainerElement = document.getElementById("timeOutInputContainerElement");
+const durationContainerElement = document.getElementById("durationResultContainerElement");
+
 const applicationState = {
   mode: 0
 }
@@ -37,8 +40,10 @@ function toogleApplicationMode() {
     case 1:
       applicationState.mode = 0;
       switchModeButtonElement.textContent = workingHoursTextContent;
+
+      durationContainerElement.style.display = 'block';
+      timeOutContainerElement.style.display = 'flex';
       
-      timeOutInputElement.style.display = "unset";
       break;
   
     case 0:
@@ -46,7 +51,9 @@ function toogleApplicationMode() {
       applicationState.mode = 1;
       switchModeButtonElement.textContent = timeInOutTextContent;
 
-      timeOutInputElement.style.display = "none";
+      durationContainerElement.style.display = 'none';
+      timeOutContainerElement.style.display = 'none';
+
       break;
   }
 }
