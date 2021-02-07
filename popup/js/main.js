@@ -23,7 +23,6 @@ convertButtonElement.addEventListener("click", () => {
 
 switchModeButtonElement.addEventListener("click", () => {
   toogleApplicationMode();
-
 }, {})
 
 function toogleApplicationMode() {
