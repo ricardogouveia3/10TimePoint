@@ -127,5 +127,6 @@ function inputMask(event) {
   const inputValue = event.target.value;
   const lastDigit = inputValue.substr(inputValue.length - 1);
 
-  if (!validDigits.includes(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
+  if (!validDigits.includes(lastDigit) || inputValue.length >= 6) { event.target.value = inputValue.slice(0, -1); }
+  if (inputValue.length === 2) { event.target.value = inputValue + ":"; }
 }
