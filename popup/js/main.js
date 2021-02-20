@@ -18,11 +18,13 @@ const applicationState = {
 
 convertButtonElement.addEventListener("click", () => {
   const timeIn = timeInInputElement.value;
-  const timeOut = timeOutInputElement.value;
+  const timeOut = applicationState.mode === 1 ? "00:00" : timeOutInputElement.value;
+
+  const validTimeRegex = /(([0-2])([0-9]):([0-5])([0-9]))/;
   
   const timeDiff = calculateDuration(timeIn, timeOut);
 
-  if ( timeDiff < 0 || isNaN(timeDiff) ) {
+  if ( timeDiff < 0 || isNaN(timeDiff) || !(validTimeRegex.test(timeIn) && validTimeRegex.test(timeOut)) ) {
     errorHandler();
   } else {
     spanResultElement.textContent = milisecondsToTime(timeDiff);
@@ -65,11 +67,6 @@ function toogleApplicationMode() {
 }
 
 function calculateDuration(timeIn, timeOut) {
-  if (applicationState.mode === 1) {
-    timeOut = timeIn;
-    timeIn = "00:00";
-  }
-
   const timeStampIn = createDateWithTime(timeIn);
   const timeStapOut = createDateWithTime(timeOut);
 
@@ -125,7 +122,7 @@ function errorHandler() {
 }
 
 function inputMask(event) {
-  const onlyNumberOrSeparator = /^[\d:]+/;
+  const onlyNumberOrSeparator = /^[\d]+/;
   const inputValue = event.target.value;
   const lastDigit = inputValue.substr(inputValue.length - 1);
 
@@ -133,16 +130,32 @@ function inputMask(event) {
   const lastInputValueLengthLocal = lastInputValueLength;
   lastInputValueLength = inputValue.length;
 
-  // max length & valid digits
-  if (inputValue.length > 5 || !onlyNumberOrSeparator.test(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
+  // max length
+  if (inputValue.length > 5 ) { event.target.value = inputValue.slice(0, -1); }
 
   // do not run masking when deleting
-  if (inputValue.length > lastInputValueLengthLocal) {
+  if (inputValue.length >= lastInputValueLengthLocal) {
+    // valid first digit
+    const regex0to2 = /^[0-2]/;
+    if (inputValue.length === 1 && !regex0to2.test(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
+
+    // valid second digit
+    const regexDigit = /^[\d]/;
+    if (inputValue.length === 2 && !regexDigit.test(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
 
     // auto includes separator after 2 digit
     if (inputValue.length === 2 && !inputValue.includes(":")) { event.target.value = inputValue + ":"; }
 
     // auto includes 0 if only 1 digit for hour
     if (inputValue.length === 2 && inputValue.includes(":")) { event.target.value = "0" + inputValue; }
+
+    // valid third digit
+    const regex0to5 = /^[0-5]/;
+    if (inputValue.length === 4 && !regex0to5.test(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
+
+    // valid last digit
+    if (inputValue.length === 5 && !regexDigit.test(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
   }
 }
+
+function priorConvertCheck() {}
