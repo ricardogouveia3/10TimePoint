@@ -10,6 +10,8 @@ const spanDecimalResultElement = document.getElementById("resultDecimalSpan");
 const timeOutContainerElement = document.getElementById("timeOutInputContainerElement");
 const durationContainerElement = document.getElementById("durationResultContainerElement");
 
+let lastInputValueLength = 0;
+
 const applicationState = {
   mode: 0
 }
@@ -123,10 +125,24 @@ function errorHandler() {
 }
 
 function inputMask(event) {
-  const validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  const onlyNumberOrSeparator = /^[\d:]+/;
   const inputValue = event.target.value;
   const lastDigit = inputValue.substr(inputValue.length - 1);
 
-  if (!validDigits.includes(lastDigit) || inputValue.length >= 6) { event.target.value = inputValue.slice(0, -1); }
-  if (inputValue.length === 2) { event.target.value = inputValue + ":"; }
+  // handles last length 
+  const lastInputValueLengthLocal = lastInputValueLength;
+  lastInputValueLength = inputValue.length;
+
+  // max length & valid digits
+  if (inputValue.length > 5 || !onlyNumberOrSeparator.test(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
+
+  // do not run masking when deleting
+  if (inputValue.length > lastInputValueLengthLocal) {
+
+    // auto includes separator after 2 digit
+    if (inputValue.length === 2 && !inputValue.includes(":")) { event.target.value = inputValue + ":"; }
+
+    // auto includes 0 if only 1 digit for hour
+    if (inputValue.length === 2 && inputValue.includes(":")) { event.target.value = "0" + inputValue; }
+  }
 }
