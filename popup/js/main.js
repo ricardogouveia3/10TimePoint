@@ -32,6 +32,10 @@ switchModeButtonElement.addEventListener("click", () => {
   toogleApplicationMode();
 }, {})
 
+timeInInputElement.addEventListener("input", inputMask);
+
+timeOutInputElement.addEventListener("input", inputMask);
+
 function toogleApplicationMode() {
   const workingHoursTextContent = "Switch to Working Hours";
   const timeInOutTextContent = "Switch to time in n out";
@@ -116,4 +120,12 @@ function errorHandler() {
   spanDecimalResultElement.textContent = "e";
 
   return;
+}
+
+function inputMask(event) {
+  const validDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  const inputValue = event.target.value;
+  const lastDigit = inputValue.substr(inputValue.length - 1);
+
+  if (!validDigits.includes(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
 }
