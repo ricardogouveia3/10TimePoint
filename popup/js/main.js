@@ -2,7 +2,6 @@ const timeInInputElement = document.getElementById("timeInInput");
 const timeOutInputElement = document.getElementById("timeOutInput");
 
 const convertButtonElement = document.getElementById("convertButton");
-const switchModeButtonElement = document.getElementById("switchModeButton");
 
 const spanResultElement = document.getElementById("resultSpan");
 const spanDecimalResultElement = document.getElementById("resultDecimalSpan");
@@ -32,39 +31,9 @@ convertButtonElement.addEventListener("click", () => {
   }
 }, {});
 
-switchModeButtonElement.addEventListener("click", () => {
-  toogleApplicationMode();
-}, {})
-
 timeInInputElement.addEventListener("input", inputMask);
 
 timeOutInputElement.addEventListener("input", inputMask);
-
-function toogleApplicationMode() {
-  const workingHoursTextContent = "Switch to Working Hours";
-  const timeInOutTextContent = "Switch to time in n out";
-
-  switch (applicationState.mode) {
-    case 1:
-      applicationState.mode = 0;
-      switchModeButtonElement.textContent = workingHoursTextContent;
-
-      durationContainerElement.style.display = 'block';
-      timeOutContainerElement.style.display = 'flex';
-      
-      break;
-  
-    case 0:
-    default:
-      applicationState.mode = 1;
-      switchModeButtonElement.textContent = timeInOutTextContent;
-
-      durationContainerElement.style.display = 'none';
-      timeOutContainerElement.style.display = 'none';
-
-      break;
-  }
-}
 
 function calculateDuration(timeIn, timeOut) {
   const timeStampIn = createDateWithTime(timeIn);
