@@ -2,22 +2,16 @@ const timeInInputElement = document.getElementById("timeInInput");
 const timeOutInputElement = document.getElementById("timeOutInput");
 
 const convertButtonElement = document.getElementById("convertButton");
+const clearButtonElement = document.getElementById("clearButton");
 
-const spanResultElement = document.getElementById("resultSpan");
-const spanDecimalResultElement = document.getElementById("resultDecimalSpan");
-
-const timeOutContainerElement = document.getElementById("timeOutInputContainerElement");
-const durationContainerElement = document.getElementById("durationResultContainerElement");
+const resultDurationElement = document.getElementById("resultDuration");
+const resultDecimalElement = document.getElementById("resultDecimal");
 
 let lastInputValueLength = 0;
 
-const applicationState = {
-  mode: 0
-}
-
 convertButtonElement.addEventListener("click", () => {
   const timeIn = timeInInputElement.value;
-  const timeOut = applicationState.mode === 1 ? "00:00" : timeOutInputElement.value;
+  const timeOut = timeOutInputElement.value;
 
   const validTimeRegex = /(([0-2])([0-9]):([0-5])([0-9]))/;
   
@@ -26,13 +20,14 @@ convertButtonElement.addEventListener("click", () => {
   if ( timeDiff < 0 || isNaN(timeDiff) || !(validTimeRegex.test(timeIn) && validTimeRegex.test(timeOut)) ) {
     errorHandler();
   } else {
-    spanResultElement.textContent = milisecondsToTime(timeDiff);
-    spanDecimalResultElement.textContent = milisecondsToDecimalHours(timeDiff);
+    resultDurationElement.value = milisecondsToTime(timeDiff);
+    resultDecimalElement.value = milisecondsToDecimalHours(timeDiff);
   }
 }, {});
 
-timeInInputElement.addEventListener("input", inputMask);
+clearButtonElement.addEventListener("click", clearFields);
 
+timeInInputElement.addEventListener("input", inputMask);
 timeOutInputElement.addEventListener("input", inputMask);
 
 function calculateDuration(timeIn, timeOut) {
@@ -84,10 +79,17 @@ function milisecondsToDecimalHours(time) {
 }
 
 function errorHandler() {
-  spanResultElement.textContent = "e";
-  spanDecimalResultElement.textContent = "e";
+  resultDurationElement.value = "e";
+  resultDecimalElement.value = "e";
 
   return;
+}
+
+function clearFields() {
+  timeInInputElement.value = "";
+  timeOutInputElement.value = "";
+  resultDurationElement.value = "";
+  resultDecimalElement.value = "";
 }
 
 function inputMask(event) {
@@ -126,5 +128,3 @@ function inputMask(event) {
     if (inputValue.length === 5 && !regexDigit.test(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
   }
 }
-
-function priorConvertCheck() {}

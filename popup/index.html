@@ -10,35 +10,40 @@
     </header>
 
     <div class="input__container">
-      <div class="single-input-container">
-        <label for="timeInInput">Time in</label>
+      <div class="input-field">
+        <label class="text-input__label" for="timeInInput">Time in</label>
         <input type="text" name="timeInInput" placeholder="--:--" id="timeInInput">
       </div>
-      <div class="single-input-container" id="timeOutInputContainerElement">
-        <label for="timeOutInput">Time out</label>
+      <div class="input-field" id="timeOutInputContainerElement">
+        <label class="text-input__label" for="timeOutInput">Time out</label>
         <input type="text" name="timeOutInput" placeholder="--:--" id="timeOutInput">
       </div>
     </div>
 
     <div class="result__container">
-      <div class="single-result-container" id="durationResultContainerElement">
-        <span class="result-label">Duration</span>
-        <span id="resultSpan">--:--</span>
+      <div class="result-field">
+        <label class="text-input__label" for="durationInput">Duration</label>
+        <input type="text" name="durationInput" placeholder="--:--" id="resultDuration" disabled>
       </div>
-      <div class="single-result-container">
-        <span class="result-label">Decimal</span>
-        <span id="resultDecimalSpan">00.00</span>
+      <div class="result-field" id="timeOutInputContainerElement">
+        <label class="text-input__label" for="decimalInput">Decimal</label>
+        <input type="text" name="decimalInput" placeholder="0.00" id="resultDecimal" disabled>
       </div>
     </div>
 
+    <div class="options__container">
+      <input class="options__checkbox" type="checkbox" name="lunchTime" id="lunchTimeCheckbox">
+      <label class="options__label" for="lunchTime">Subtract lunch time? (-1hr)</label>
+    </div>
+
     <div class="button__container">
-      <button class="button-primary" id="convertButton">Convert!</button>
+      <button class="button--secundary button--danger" id="clearButton">Clear</button>
+      <button class="button--primary" id="convertButton">Convert!</button>
     </div>
 
     <span class="footer">
       v0.4
     </span>
-
 
     <script src="js/main.js"></script>
   </body>
