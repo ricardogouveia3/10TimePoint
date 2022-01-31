@@ -22,8 +22,28 @@ clearButtonElement.addEventListener("click", clearFields);
 timeInInputElement.addEventListener("input", inputMask);
 timeOutInputElement.addEventListener("input", inputMask);
 
+// init routine
+recoverLocalStorageValues();
+
 
 // functions
+function recoverLocalStorageValues() {
+  let recoveredCheckinTime = null;
+  let recoveredCheckoutTime = null;
+
+  chrome.storage.sync.get(["checkinTime", "checkoutTime"], ({checkinTime, checkoutTime}) => {
+    recoveredCheckinTime = checkinTime;
+    recoveredCheckoutTime = checkoutTime;
+
+    if (!recoveredCheckinTime || !recoveredCheckoutTime) { return; }
+
+    timeInInputElement.value = recoveredCheckinTime;
+    timeOutInputElement.value = recoveredCheckoutTime;
+  
+    updateResult();
+  });
+}
+
 function updateResult() {
   resultDecimalElement.value = calculateTime();
   // resultDurationElement.value = calculateDuration();
@@ -31,7 +51,11 @@ function updateResult() {
 
 function calculateTime() {
   const checkinTime = timeInInputElement.value;
+  chrome.storage.sync.set({checkinTime: checkinTime});
+
   const checkoutTime = timeOutInputElement.value;
+  chrome.storage.sync.set({checkoutTime: checkoutTime});
+
 
   if (!checkinTime || !checkoutTime) {
     this.errorHandler();
@@ -65,7 +89,11 @@ function errorHandler() {
 
 function clearFields() {
   timeInInputElement.value = "";
+  chrome.storage.sync.set({checkinTime: null});
+
   timeOutInputElement.value = "";
+  chrome.storage.sync.set({checkoutTime: null});
+
   // resultDurationElement.value = "";
   resultDecimalElement.value = "";
 }
