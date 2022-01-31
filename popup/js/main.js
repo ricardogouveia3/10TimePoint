@@ -10,6 +10,7 @@ const clearButtonElement = document.getElementById("clearButton");
 // const resultDurationElement = document.getElementById("resultDuration");
 const resultDecimalElement = document.getElementById("resultDecimal");
 
+const footerVersionElement = document.getElementById("footerVersion");
 
 // global variables
 let lastInputValueLength = 0;
@@ -23,6 +24,7 @@ timeInInputElement.addEventListener("input", inputMask);
 timeOutInputElement.addEventListener("input", inputMask);
 
 // init routine
+getVersionFromManifest();
 recoverLocalStorageValues();
 
 
@@ -133,4 +135,9 @@ function inputMask(event) {
     // valid last digit
     if (inputValue.length === 5 && !regexDigit.test(lastDigit)) { event.target.value = inputValue.slice(0, -1); }
   }
+}
+
+function getVersionFromManifest() {
+  const manifestData = chrome.runtime.getManifest();
+  footerVersionElement.innerText = manifestData.version;
 }
