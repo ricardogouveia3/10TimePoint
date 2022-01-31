@@ -70,9 +70,7 @@ function calculateTime() {
   return result.toFixed(2);
 }
 
-// function calculateDuration() {
-
-// }
+// function calculateDuration() {}
 
 function convertToDecimal(time) {
   const stringTime = time.split(":");
