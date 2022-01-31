@@ -1,85 +1,63 @@
+// HTML nodes references
 const timeInInputElement = document.getElementById("timeInInput");
 const timeOutInputElement = document.getElementById("timeOutInput");
+
+const lunchCheckboxElement = document.getElementById("lunchTimeCheckbox")
 
 const convertButtonElement = document.getElementById("convertButton");
 const clearButtonElement = document.getElementById("clearButton");
 
-const resultDurationElement = document.getElementById("resultDuration");
+// const resultDurationElement = document.getElementById("resultDuration");
 const resultDecimalElement = document.getElementById("resultDecimal");
 
+
+// global variables
 let lastInputValueLength = 0;
 
-convertButtonElement.addEventListener("click", () => {
-  const timeIn = timeInInputElement.value;
-  const timeOut = timeOutInputElement.value;
 
-  const validTimeRegex = /(([0-2])([0-9]):([0-5])([0-9]))/;
-  
-  const timeDiff = calculateDuration(timeIn, timeOut);
-
-  if ( timeDiff < 0 || isNaN(timeDiff) || !(validTimeRegex.test(timeIn) && validTimeRegex.test(timeOut)) ) {
-    errorHandler();
-  } else {
-    resultDurationElement.value = milisecondsToTime(timeDiff);
-    resultDecimalElement.value = milisecondsToDecimalHours(timeDiff);
-  }
-}, {});
-
+// event listeners
+convertButtonElement.addEventListener("click", updateResult);
 clearButtonElement.addEventListener("click", clearFields);
 
 timeInInputElement.addEventListener("input", inputMask);
 timeOutInputElement.addEventListener("input", inputMask);
 
-function calculateDuration(timeIn, timeOut) {
-  const timeStampIn = createDateWithTime(timeIn);
-  const timeStapOut = createDateWithTime(timeOut);
 
-  const timeDiff = timeStapOut - timeStampIn;
+// functions
+function updateResult() {
+  resultDecimalElement.value = calculateTime();
+  // resultDurationElement.value = calculateDuration();
+}
 
-  if (timeDiff < 0) {
-    errorHandler();
+function calculateTime() {
+  const checkinTime = timeInInputElement.value;
+  const checkoutTime = timeOutInputElement.value;
+
+  if (!checkinTime || !checkoutTime) {
+    this.errorHandler();
     return;
   }
 
-  return timeDiff;
+  const lunch = lunchCheckboxElement.checked ? 1 : 0;
+
+  const result = convertToDecimal(checkoutTime) - convertToDecimal(checkinTime) - lunch;
+  return result.toFixed(2);
 }
 
-function createDateWithTime(time) {
-  const createdDate = new Date();
+// function calculateDuration() {
 
-  const timeHours = time.split(":")[0];
-  const timeMinutes = time.split(":")[1];
+// }
 
-  createdDate.setHours(timeHours);
-  createdDate.setMinutes(timeMinutes);
-  createdDate.setSeconds(00);
-  
-  return createdDate.getTime();
-}
+function convertToDecimal(time) {
+  const stringTime = time.split(":");
+  const hours = parseInt(stringTime[0]);
+  const minutes = parseInt(stringTime[1]);
 
-function milisecondsToTime(duration) {
-  let minutes = Math.floor((duration / (1000 * 60)) % 60);
-  let hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
-
-  hours = (hours < 10) ? "0" + hours : hours;
-  minutes = (minutes < 10) ? "0" + minutes : minutes;
-
-  return hours + ":" + minutes;
-}
-
-function milisecondsToDecimalHours(time) {
-  time = milisecondsToTime(time);
-
-  const decimalMinutes = parseInt( ( time.split(':')[1] / 6 ) * 10 );
-  const decimalHours = parseInt( time.split(':')[0] );
-
-  const fixedTimeString = decimalHours + '.' + ( decimalMinutes < 10 ? '0' : '' ) + decimalMinutes;
-
-  return parseFloat(fixedTimeString).toFixed(2);
-}
+  return hours + minutes / 60;
+} 
 
 function errorHandler() {
-  resultDurationElement.value = "e";
+  // resultDurationElement.value = "e";
   resultDecimalElement.value = "e";
 
   return;
@@ -88,7 +66,7 @@ function errorHandler() {
 function clearFields() {
   timeInInputElement.value = "";
   timeOutInputElement.value = "";
-  resultDurationElement.value = "";
+  // resultDurationElement.value = "";
   resultDecimalElement.value = "";
 }
 
